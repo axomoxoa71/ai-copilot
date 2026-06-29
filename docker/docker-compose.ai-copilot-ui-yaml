@@ -1,0 +1,16 @@
+name: ai-copilot-ui
+
+services:
+  ai-copilot-ui:
+    image: ai-copilot-ui:latest
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile.ui
+    container_name: ai-copilot-ui
+    ports:
+      - "15173:80"
+    environment:
+      NGINX_AGENT_API_UPSTREAM: "${NGINX_AGENT_API_UPSTREAM:-http://host.docker.internal:18787}"
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    restart: unless-stopped

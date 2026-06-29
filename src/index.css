@@ -1,0 +1,67 @@
+@import url("https://fonts.googleapis.com/css2?family=Merriweather:wght@700&family=Space+Grotesk:wght@400;500;700&display=swap");
+
+:root {
+  --ink-0: #f5fbff;
+  --ink-1: #c5dde8;
+  --highlight: #ffd992;
+  --headline-font: "Merriweather", serif;
+  --body-font: "Space Grotesk", sans-serif;
+  color-scheme: dark;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  font-family: var(--body-font);
+  color-scheme: dark;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(94, 130, 149, 0.75) rgba(5, 16, 24, 0.92);
+  background:
+    radial-gradient(
+      circle at 15% 18%,
+      rgba(255, 190, 113, 0.36),
+      transparent 40%
+    ),
+    radial-gradient(
+      circle at 85% 76%,
+      rgba(118, 255, 223, 0.34),
+      transparent 38%
+    ),
+    #081923;
+}
+
+#root {
+  min-height: 100vh;
+}
+
+/* Global dark scrollbar fallback for browsers that ignore element-level rules */
+*::-webkit-scrollbar {
+  width: 9px;
+  height: 9px;
+}
+
+*::-webkit-scrollbar-track {
+  background: rgba(5, 16, 24, 0.92);
+}
+
+*::-webkit-scrollbar-thumb {
+  background: linear-gradient(
+    180deg,
+    rgba(108, 148, 169, 0.8) 0%,
+    rgba(76, 113, 132, 0.8) 100%
+  );
+  border-radius: 99px;
+  border: 2px solid rgba(5, 16, 24, 0.92);
+}
+
+*::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(
+    180deg,
+    rgba(129, 171, 194, 0.92) 0%,
+    rgba(92, 132, 153, 0.92) 100%
+  );
+}

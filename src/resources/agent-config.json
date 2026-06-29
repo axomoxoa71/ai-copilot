@@ -1,0 +1,562 @@
+{
+  "defaultAgentName": "orchestrator-agent",
+  "defaultModel": "openai/gpt-4o-mini",
+  "availableModels": [
+    { "id": "openai/gpt-4o-mini", "label": "GPT-4o Mini" },
+    { "id": "openai/gpt-4o", "label": "GPT-4o" },
+    { "id": "openai/gpt-4-turbo", "label": "GPT-4 Turbo" },
+    { "id": "anthropic/claude-3.5-sonnet", "label": "Claude 3.5 Sonnet" },
+    { "id": "anthropic/claude-3-opus", "label": "Claude 3 Opus" },
+    { "id": "google/gemini-2.0-flash-exp", "label": "Gemini 2.0 Flash" },
+    { "id": "meta-llama/llama-3.1-405b-instruct", "label": "Llama 3.1 405B" }
+  ],
+  "agent-runtime": {
+    "tool-execution-retries": 1
+  },
+  "orchestration": {
+    "enabled": true,
+    "features": {
+      "task-planning": true,
+      "complexity-analysis": true,
+      "dialog-management": true,
+      "delegation-optimization": true,
+      "phase-coordination": true
+    },
+    "modules": {
+      "task-planner": "./task-planner.js",
+      "dialog-manager": "./dialog-manager.js",
+      "delegation-strategies": "./delegation-strategies.js"
+    }
+  },
+  "multi-agent": {
+    "work-types": {
+      "default": "general-task",
+      "by-category": {
+        "atlassian": "atlassian-operations",
+        "workato": "automation-workflow",
+        "coding": "code-implementation",
+        "documentation": "documentation",
+        "general": "general-task"
+      },
+      "by-agent": {
+        "orchestrator-agent": "orchestration",
+        "atlassian-agent": "atlassian-operations",
+        "workato-dev": "automation-workflow"
+      }
+    },
+    "contracts": {
+      "default": {
+        "input_schema": {
+          "type": "object",
+          "required": [
+            "task_id",
+            "target_agent",
+            "role",
+            "work_type",
+            "objective",
+            "subtasks",
+            "constraints",
+            "expected_deliverables"
+          ]
+        },
+        "output_schema": {
+          "type": "object",
+          "required": [
+            "task_id",
+            "agent",
+            "work_type",
+            "status",
+            "summary",
+            "subtask_results",
+            "deliverables",
+            "handoff"
+          ]
+        }
+      },
+      "by-work-type": {
+        "atlassian-operations": {
+          "expected_deliverables": [
+            "Jira/Confluence operation summary",
+            "Issue keys, page IDs, or URLs touched",
+            "Query details used (for traceability)"
+          ],
+          "input_schema": {
+            "type": "object",
+            "required": [
+              "task_id",
+              "target_agent",
+              "work_type",
+              "objective",
+              "subtasks"
+            ]
+          },
+          "output_schema": {
+            "type": "object",
+            "required": [
+              "task_id",
+              "agent",
+              "work_type",
+              "status",
+              "summary",
+              "subtask_results",
+              "deliverables",
+              "handoff"
+            ]
+          }
+        },
+        "code-implementation": {
+          "expected_deliverables": [
+            "Changed file list",
+            "Implementation notes per subtask",
+            "Test/check execution results"
+          ],
+          "input_schema": {
+            "type": "object",
+            "required": [
+              "task_id",
+              "target_agent",
+              "work_type",
+              "objective",
+              "subtasks"
+            ]
+          },
+          "output_schema": {
+            "type": "object",
+            "required": [
+              "task_id",
+              "agent",
+              "work_type",
+              "status",
+              "summary",
+              "subtask_results",
+              "deliverables",
+              "handoff"
+            ]
+          }
+        }
+      }
+    }
+  },
+  "sdlm": {
+    "enabled": true,
+    "description": "Software Development Lifecycle Management orchestration for Jira epics",
+    "modules": {
+      "sdlm-orchestrator": "./sdlm-orchestrator.js"
+    },
+    "phases": [
+      "requirements-collection",
+      "requirements-refinement",
+      "design-validation",
+      "work-breakdown",
+      "implementation-planning",
+      "implementation"
+    ],
+    "standards": {
+      "design_implementation_rules_url": "https://confluence.build.ingka.ikea.com/spaces/FLICORE/pages/1338146844/AI-Design+and+Implementation+Rules",
+      "standards_name": "AI-Design and Implementation Rules - FLICORE",
+      "validation_required": true,
+      "sections": [
+        "Design Principles",
+        "Coding Standards",
+        "Testing Requirements",
+        "Security",
+        "Performance",
+        "Documentation",
+        "Deployment",
+        "Monitoring"
+      ]
+    },
+    "requirements_refinement": {
+      "enabled": true,
+      "dialog_on_unclear": true,
+      "clarity_threshold": 0.75,
+      "clarity_levels": [
+        "CLEAR",
+        "NEEDS_REFINEMENT",
+        "UNCLEAR",
+        "AMBIGUOUS",
+        "INCOMPLETE"
+      ]
+    },
+    "work_breakdown": {
+      "task_types": [
+        "Design",
+        "Implementation",
+        "Review",
+        "Testing",
+        "Compliance"
+      ],
+      "estimation_units": "Story Points",
+      "include_testing": true,
+      "include_compliance": true
+    }
+  },
+  "agents": [
+    {
+      "name": "orchestrator-agent",
+      "role": "orchestrator",
+      "url": "$VITE_LOCAL_CHAT_AGENT_URL||/agent-api",
+      "llm-config": {
+        "model": "openai/gpt-4o-mini",
+        "base-url": "$OPENROUTER_BASE_URL",
+        "temperature": 0.2,
+        "http-referer": "$OPENROUTER_HTTP_REFERER",
+        "x-title": "$OPENROUTER_X_TITLE"
+      },
+      "system-prompt": "You are the Orchestration Agent - a strategic coordinator responsible for planning, breaking down, and delegating tasks to specialist agents.\n\nCore Responsibilities:\n1. ANALYZE & PLAN: Break down user requests into manageable tasks\n2. ASSESS COMPLEXITY: Determine if work is simple (1 step), moderate (2-3 steps), or complex (4+ steps with dependencies)\n3. IDENTIFY GAPS: Recognize open questions and ambiguities that need clarification\n4. DELEGATE STRATEGICALLY: Route work to specialist agents when appropriate\n5. COORDINATE: Manage task dependencies and sequencing for multi-agent work\n6. REPORT: Summarize plans and results clearly with next steps\n\nCOMPLEXITY LEVELS:\n- SIMPLE: Single straightforward action. Example: 'Show me Jira tickets', 'Find an issue by ID'\n  → Action: Direct execution or simple delegation\n- MODERATE: 2-3 related steps with minor dependencies. Example: 'Create ticket and link to epic'\n  → Action: Plan → Confirm → Execute sequentially\n- COMPLEX: 4+ steps, multiple dependencies, conditional logic. Example: 'Set up automation workflow'\n  → Action: Detailed plan → Approval → Coordinated multi-agent execution\n\nCATEGORIES & ROUTING:\n- ATLASSIAN (Jira/Confluence): jira, confluence, epic, backlog, sprint, issue, ticket, workflow → atlassian-agent\n- WORKATO (Automation/Integration): workato, automation, workflow, integration, trigger, action → workato-dev\n- CODING (Implementation): code, function, refactor, debug, test, implement, feature → code-agent\n- DOCUMENTATION: document, write, readme, guide, explain, describe → doc-agent\n- GENERAL: No clear category → Handle directly or collect more info\n\nWHEN TO ASK CLARIFYING QUESTIONS (ONLY when blocked):\n1. Conditional statements ('if X, then Y') → Ask: 'How should we handle [X]?'\n2. Ambiguous pronouns ('it', 'that', used multiple times) → Ask: 'Can you clarify what [pronoun] refers to?'\n3. Missing context (no timeline, success criteria, scope) → Ask: 'What's the expected outcome?'\n4. Multiple interpretations → Ask: 'Did you mean [Option A] or [Option B]?'\n5. Unclear dependencies → Ask: 'What triggers the next step?'\n\nDECISION LOGIC:\nIF required information is missing and cannot be inferred safely THEN\n  Ask only the minimum blocking question(s)\n  Continue immediately after answer\nELSE IF complexity = SIMPLE THEN\n  Acknowledge → Delegate/Execute → Return result\nELSE IF complexity = MODERATE THEN\n  Create 2-3 step breakdown\n  Present plan to user\n  Get confirmation\n  Execute sequentially\nELSE IF complexity = COMPLEX THEN\n  Create detailed multi-phase plan\n  Identify dependencies\n  Recommend agent(s)\n  Present comprehensive plan\n  Get approval\n  Delegate with coordination\nEND IF\n\nDELEGATION FORMAT:\nWhen delegating, provide:\n1. Original request context\n2. Specific subtasks with clear objectives\n3. Success criteria and validation requirements\n4. Any dependencies or constraints\n5. Configuration (MCP configs, system prompts)\n\nOUTPUT FORMATTING:\nSimple tasks: 📋 Task | ✓ Status | 📊 Result\nModerate tasks: 📋 Request | 📅 Plan (steps) | 📌 Next\nComplex tasks: 📋 Request | ⏱️ Complexity | 📅 Phases | 🔗 Dependencies | ⚠️ Questions | 🎯 Criteria\nClarification: ❓ Questions | 💡 Suggestions | 📝 Request\n\nKEY PRINCIPLES:\n- TRANSPARENCY: Explain your reasoning\n- EFFICIENCY: Route to specialists when beneficial\n- CLARITY: Break down complex work into understandable steps\n- USER CONTROL: Always get approval on complex plans\n- CONTEXT: Share relevant information with delegated agents\n- PROACTIVE: Ask questions rather than guessing intent\n\nEXECUTION POLICY:\n- Tool-first: if a relevant tool is available, execute it and return actual results.\n- Do not return plan-only language such as \"I would run this query\".\n- Continue execution without user interaction unless blocked by: (1) missing required tool arguments that cannot be inferred, (2) permission/access constraints, or (3) explicit confirmation required for sensitive/destructive actions.\n- If details are optional, proceed with best-effort assumptions and state assumptions briefly in the final answer.",
+      "delegation-rules": [
+        {
+          "target-agent": "atlassian-agent",
+          "keywords": [
+            "jira",
+            "confluence",
+            "jql",
+            "epic",
+            "backlog",
+            "sprint",
+            "issue",
+            "ticket",
+            "workflow",
+            "project",
+            "assignee",
+            "query",
+            "search",
+            "find",
+            "create",
+            "update",
+            "link",
+            "status",
+            "priority",
+            "component",
+            "version",
+            "resolution",
+            "reporter",
+            "watchers",
+            "transition",
+            "field",
+            "custom field",
+            "label",
+            "filter",
+            "board",
+            "page",
+            "space",
+            "document",
+            "knowledge"
+          ],
+          "semantic-keywords": [
+            "issue tracking",
+            "ticket workflow",
+            "sprint board",
+            "knowledge base",
+            "documentation space",
+            "epic management",
+            "backlog planning",
+            "issue linking",
+            "search jira",
+            "jira query",
+            "confluence search",
+            "create ticket",
+            "update issue",
+            "track progress",
+            "issue status",
+            "work item"
+          ],
+          "regex-patterns": [
+            "\\bjira\\b",
+            "\\bconfluence\\b",
+            "\\bjql\\b",
+            "\\bepic\\b",
+            "\\bbacklog\\b",
+            "\\bsprint\\b",
+            "\\bticket(?:s)?\\b",
+            "\\bissue(?:s)?\\b",
+            "\\bfind.*(?:jira|ticket|issue)\\b",
+            "\\b(?:jira|ticket|issue).*(?:query|search|find)\\b",
+            "\\b(?:create|update|link).*(?:jira|ticket|issue)\\b",
+            "\\batlassian\\b"
+          ],
+          "priority": 100,
+          "min-confidence": 0.55,
+          "complexity": "any",
+          "category": "atlassian"
+        },
+        {
+          "target-agent": "workato-dev",
+          "keywords": [
+            "workato",
+            "automation",
+            "workflow",
+            "integration",
+            "trigger",
+            "action",
+            "integrate",
+            "automate",
+            "connect"
+          ],
+          "semantic-keywords": [
+            "workflow automation",
+            "system integration",
+            "data flow automation",
+            "event trigger",
+            "automated action",
+            "third-party integration",
+            "api integration"
+          ],
+          "regex-patterns": [
+            "\\bworkato\\b",
+            "\\bautomation\\b",
+            "\\bintegrat",
+            "\\bworkflow\\b",
+            "\\btrigger\\b"
+          ],
+          "priority": 100,
+          "min-confidence": 0.65,
+          "complexity": "any",
+          "category": "workato"
+        },
+        {
+          "target-agent": "code-agent",
+          "keywords": [
+            "code",
+            "function",
+            "refactor",
+            "debug",
+            "test",
+            "implement",
+            "feature",
+            "component",
+            "bug",
+            "fix"
+          ],
+          "semantic-keywords": [
+            "code implementation",
+            "feature development",
+            "bug fixing",
+            "code refactoring",
+            "unit testing",
+            "debugging",
+            "component development"
+          ],
+          "regex-patterns": [
+            "\\bcode\\b",
+            "\\bfunction\\b",
+            "\\brefactor",
+            "\\bdebug",
+            "\\btest\\b",
+            "\\bimplement"
+          ],
+          "priority": 100,
+          "min-confidence": 0.68,
+          "complexity": "any",
+          "category": "coding",
+          "fallback": true
+        },
+        {
+          "target-agent": "doc-agent",
+          "keywords": [
+            "document",
+            "write",
+            "readme",
+            "guide",
+            "explain",
+            "describe",
+            "documentation",
+            "article"
+          ],
+          "semantic-keywords": [
+            "documentation writing",
+            "technical guide",
+            "readme creation",
+            "content documentation",
+            "process documentation",
+            "feature documentation"
+          ],
+          "regex-patterns": [
+            "\\bdocument",
+            "\\bwrite",
+            "\\bguide\\b",
+            "\\breadme\\b"
+          ],
+          "priority": 100,
+          "min-confidence": 0.7,
+          "complexity": "any",
+          "category": "documentation",
+          "fallback": true
+        }
+      ],
+      "execution-strategies": {
+        "simple": "direct-execution",
+        "moderate": "guided-delegation",
+        "complex": "planning-delegation",
+        "has-questions": "dialog-first"
+      },
+      "coordination": {
+        "multi-agent-sync": true,
+        "phase-validation": true,
+        "dependency-tracking": true,
+        "progress-reporting": true
+      },
+      "header-api-key-name": "$VITE_LOCAL_CHAT_AGENT_API_KEY_NAME",
+      "header-api-key-value": "$VITE_LOCAL_CHAT_AGENT_API_KEY_VALUE"
+    },
+    {
+      "name": "atlassian-agent",
+      "role": "specialist",
+      "description": "Specializes in Jira and Confluence workflows, issue triage, JQL queries, and documentation guidance. Handles all Atlassian-related tasks.",
+      "url": "$VITE_LOCAL_CHAT_AGENT_URL||/agent-api",
+      "llm-config": {
+        "model": "openai/gpt-4o-mini",
+        "base-url": "$OPENROUTER_BASE_URL",
+        "temperature": 0.2,
+        "http-referer": "$OPENROUTER_HTTP_REFERER",
+        "x-title": "$OPENROUTER_X_TITLE"
+      },
+      "system-prompt": "You are atlassian-agent, a specialist in Jira and Confluence. You handle:\n1. JIRA OPERATIONS: Query with JQL, create/update issues, manage epics, link issues, update workflows\n2. CONFLUENCE: Search documentation, retrieve pages, manage knowledge base\n3. WORKFLOW MANAGEMENT: Configure issue transitions, set up automation rules, manage issue linking\n\nWhen querying Jira:\n- Use JQL for complex queries (e.g., assignee = currentUser() AND status = 'In Progress')\n- Parse natural language requests into proper JQL syntax\n- Validate JQL syntax before executing\n- Provide query results with context and actionable insights\n\nWhen creating/updating issues:\n- Confirm field values only when required values are missing or operation is sensitive/destructive\n- Link to appropriate epics when requested\n- Set proper issue type, priority, assignee\n- Add description with context\n\nWhen searching Confluence:\n- Use keywords to find relevant documentation\n- Return summaries with links\n- Suggest related pages\n\nConstraints:\n- Respect project permissions and issue visibility\n- Maintain issue linking relationships\n- Validate all JQL queries\n- Ask confirmation only for sensitive/destructive operations that require explicit user approval\n\nExecution policy:\n- Execute available Atlassian tools directly and return actual results (not intentions).\n- Ask the user only when blocked by missing required values, permissions, or explicit confirmation requirements for sensitive/destructive actions.",
+      "capabilities": [
+        "jira-query",
+        "issue-creation",
+        "issue-update",
+        "confluence-search",
+        "workflow-management",
+        "jql-parsing"
+      ],
+      "domains": [
+        "atlassian",
+        "jira",
+        "confluence"
+      ],
+      "mcp-config": {
+        "atlassian-mcp-docker": {
+          "type": "http",
+          "url": "$ATLASSIAN_MCP_URL"
+        }
+      },
+      "header-api-key-name": "$VITE_LOCAL_CHAT_AGENT_API_KEY_NAME",
+      "header-api-key-value": "$VITE_LOCAL_CHAT_AGENT_API_KEY_VALUE"
+    },
+    {
+      "name": "workato-dev",
+      "role": "specialist",
+      "description": "Specializes in Workato workflow design, integration setup, and automation architecture. Handles complex multi-system integrations and workflow automation.",
+      "url": "$WORKATO_WEBHOOK_URL||https://webhooks.workato.com/webhooks/rest/replace-with-workato-webhook-id/chatbot",
+      "llm-config": {
+        "model": "openai/gpt-4o-mini",
+        "base-url": "$OPENROUTER_BASE_URL",
+        "temperature": 0.2,
+        "http-referer": "$OPENROUTER_HTTP_REFERER",
+        "x-title": "$OPENROUTER_X_TITLE"
+      },
+      "system-prompt": "You are workato-dev, a specialist in Workato automation and integration workflows. You handle:\n1. WORKFLOW DESIGN: Create automated workflows that integrate multiple systems\n2. TRIGGER SETUP: Configure event-based triggers (webhooks, scheduled, manual)\n3. ACTION CONFIGURATION: Set up actions (create, update, notify, etc.)\n4. MULTI-SYSTEM INTEGRATION: Connect Jira, Slack, email, databases, and other platforms\n5. ERROR HANDLING: Implement robust error handling and retry logic\n\nWhen designing workflows:\n- Understand the business requirement and data flow\n- Identify systems to integrate\n- Design trigger → action chains\n- Consider error scenarios\n- Plan for scalability and performance\n\nWhen setting up integrations:\n- Verify API credentials and permissions\n- Map data fields correctly\n- Test integration before deployment\n- Document integration points\n\nWhen configuring notifications:\n- Route to correct channels (email, Slack, etc.)\n- Include relevant context\n- Respect notification preferences\n\nConstraints:\n- Follow secure coding practices\n- Validate API responses\n- Implement proper error handling\n- Test workflows thoroughly before deployment\n- Document all integration points",
+      "capabilities": [
+        "workflow-creation",
+        "integration-setup",
+        "trigger-configuration",
+        "action-setup",
+        "error-handling",
+        "notification-routing"
+      ],
+      "domains": [
+        "workato",
+        "automation",
+        "integration"
+      ],
+      "header-api-key-name": "$VITE_LOCAL_CHAT_AGENT_API_KEY_NAME",
+      "header-api-key-value": "$VITE_LOCAL_CHAT_AGENT_API_KEY_VALUE"
+    }
+  ],
+  "agent-descriptions": {
+    "orchestrator-agent": "Strategic coordinator that analyzes requests, breaks down tasks, identifies clarifications needed, and delegates to specialist agents",
+    "atlassian-agent": "Jira/Confluence specialist handling issue management, searches, and workflow configuration",
+    "workato-dev": "Automation and integration specialist designing complex workflows across multiple systems",
+    "code-agent": "Development specialist implementing features, fixing bugs, and refactoring code",
+    "doc-agent": "Documentation specialist writing technical guides, READMEs, and content"
+  },
+  "complexity-rules": {
+    "simple": {
+      "characteristics": [
+        "single action",
+        "no dependencies",
+        "clear success criteria"
+      ],
+      "examples": [
+        "Show me all open tickets",
+        "Find a Jira issue by ID",
+        "Search documentation"
+      ],
+      "execution-model": "direct-execution",
+      "typical-agents": [
+        "atlassian-agent",
+        "orchestrator-agent"
+      ]
+    },
+    "moderate": {
+      "characteristics": [
+        "2-3 related steps",
+        "minor dependencies",
+        "needs confirmation"
+      ],
+      "examples": [
+        "Create ticket and link to epic",
+        "Search and summarize findings"
+      ],
+      "execution-model": "guided-delegation",
+      "typical-agents": [
+        "atlassian-agent",
+        "workato-dev"
+      ]
+    },
+    "complex": {
+      "characteristics": [
+        "4+ steps",
+        "multiple dependencies",
+        "conditional logic",
+        "multi-agent coordination"
+      ],
+      "examples": [
+        "Set up automation workflow",
+        "Implement multi-step integration"
+      ],
+      "execution-model": "planning-delegation",
+      "typical-agents": [
+        "orchestrator-agent",
+        "atlassian-agent",
+        "workato-dev"
+      ]
+    }
+  },
+  "dialog-strategy": {
+    "enabled": true,
+    "trigger-on": [
+      "conditional-statements",
+      "ambiguous-pronouns",
+      "missing-context",
+      "multiple-interpretations",
+      "unclear-dependencies"
+    ],
+    "question-priority": {
+      "critical": [
+        9,
+        10
+      ],
+      "important": [
+        6,
+        8
+      ],
+      "optional": [
+        1,
+        5
+      ]
+    },
+    "escalation": {
+      "after-failed-attempts": 3,
+      "escalate-to": "orchestrator-agent"
+    }
+  },
+  "coordination-settings": {
+    "max-parallel-agents": 3,
+    "phase-timeout-seconds": 300,
+    "validation-required": true,
+    "progress-reporting": true,
+    "dependency-tracking": true
+  }
+}

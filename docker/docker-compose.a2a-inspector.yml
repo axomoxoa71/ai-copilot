@@ -1,0 +1,13 @@
+name: a2a-inspector
+
+services:
+  a2a-inspector:
+    image: a2a-inspector:latest
+    build:
+      context: https://github.com/a2aproject/a2a-inspector.git
+    container_name: a2a-inspector
+    ports:
+      - "8090:8080"
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    restart: unless-stopped

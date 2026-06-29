@@ -1,0 +1,356 @@
+.entry-page {
+  min-height: 140dvh;
+  width: min(940px, 100% - 2rem);
+  margin: 0 auto;
+  padding: 1.5rem 0 2.5rem;
+  color: var(--ink-0);
+}
+
+.entry-hero {
+  display: grid;
+  grid-template-columns: 220px minmax(0, 1fr);
+  gap: 1.3rem;
+  align-items: center;
+  padding: 1.2rem;
+  border-radius: 18px;
+  border: 1px solid rgba(197, 221, 232, 0.2);
+  background: linear-gradient(140deg, rgba(10, 32, 44, 0.78), rgba(19, 66, 70, 0.7));
+  box-shadow: 0 20px 42px rgba(1, 11, 18, 0.35);
+}
+
+.entry-robot {
+  position: relative;
+  height: 236px;
+  width: 214px;
+  display: grid;
+  place-items: center;
+  animation: robot-idle 3.6s ease-in-out infinite;
+}
+
+.entry-robot-svg {
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+.entry-robot-ant-tip {
+  fill: url(#visor);
+  animation: antenna-pulse 1.8s ease-in-out infinite;
+}
+
+.entry-robot-ant-stem {
+  stroke: #d9edf7;
+  stroke-width: 3;
+  stroke-linecap: round;
+}
+
+.entry-robot-head-group {
+  transform-box: fill-box;
+  transform-origin: center 74px;
+  transform:
+    translateY(calc(var(--robot-head-x) * -0.14))
+    rotate(calc(var(--robot-head-y) * 0.48));
+  transition: transform 0.08s linear;
+}
+
+.entry-robot-pupil-group {
+  transform-box: fill-box;
+  transform-origin: center;
+  transform: translate(calc(var(--robot-eye-x) * 1.35), calc(var(--robot-eye-y) * 1.35));
+  transition: transform 0.08s linear;
+}
+
+.entry-robot-arm-left,
+.entry-robot-arm-right {
+  transition: transform 0.14s ease-out;
+  transform-box: fill-box;
+  transform-origin: center 152px;
+  animation: servo-jitter 2.8s steps(6, end) infinite;
+}
+
+.entry-robot-arm-left {
+  transform:
+    translateY(calc(var(--robot-hand-shift) * -0.78))
+    rotate(8deg);
+}
+
+.entry-robot-arm-right {
+  transform:
+    translateY(calc(var(--robot-hand-shift) * 0.78))
+    rotate(-8deg);
+}
+
+.entry-robot-body-shell,
+.entry-robot-head-shell,
+.entry-robot-limb,
+.entry-robot-joint,
+.entry-robot-neck {
+  fill: url(#metalMain);
+  stroke: rgba(224, 241, 250, 0.85);
+  stroke-width: 1.7;
+}
+
+.entry-robot-limb-dark,
+.entry-robot-chest,
+.entry-robot-grid,
+.entry-robot-mouth,
+.entry-robot-brow {
+  fill: url(#metalDark);
+  stroke: rgba(161, 196, 214, 0.72);
+  stroke-width: 1;
+}
+
+.entry-robot-core {
+  fill: url(#coreGlow);
+  stroke: rgba(176, 239, 239, 0.95);
+  stroke-width: 0.9;
+  animation: core-scan 2.2s ease-in-out infinite;
+}
+
+.entry-robot-specular {
+  fill: rgba(255, 255, 255, 0.14);
+  mix-blend-mode: screen;
+  pointer-events: none;
+}
+
+.entry-robot-specular--head,
+.entry-robot-specular--body {
+  animation: specular-sweep 3.8s ease-in-out infinite;
+}
+
+.entry-robot-grid {
+  stroke-dasharray: 4 3;
+}
+
+.entry-robot-eye {
+  fill: #f7fdff;
+  stroke: rgba(164, 204, 220, 0.9);
+  stroke-width: 1.2;
+  filter: drop-shadow(0 0 6px rgba(183, 243, 255, 0.95));
+}
+
+.entry-robot-eyelid {
+  fill: #2f4b5d;
+  transform-box: fill-box;
+  transform-origin: center top;
+  animation: eyelid-blink 5.8s infinite;
+}
+
+.entry-robot-iris {
+  fill: #51b8ff;
+  opacity: 0.95;
+  filter: drop-shadow(0 0 3px rgba(81, 184, 255, 0.8));
+}
+
+.entry-robot-pupil {
+  fill: #0d1f2d;
+}
+
+.entry-robot-eye-glint {
+  fill: rgba(255, 255, 255, 0.95);
+}
+
+.entry-robot-bolt,
+.entry-robot-finger,
+.entry-robot-cheek {
+  fill: #d4eaf5;
+}
+
+@keyframes robot-idle {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-2px);
+  }
+}
+
+@keyframes antenna-pulse {
+  0%,
+  100% {
+    opacity: 0.85;
+    filter: drop-shadow(0 0 6px rgba(255, 205, 140, 0.5));
+  }
+  50% {
+    opacity: 1;
+    filter: drop-shadow(0 0 12px rgba(255, 205, 140, 0.92));
+  }
+}
+
+@keyframes eyelid-blink {
+  0%,
+  43%,
+  49%,
+  77%,
+  83%,
+  100% {
+    transform: translateY(-14px);
+  }
+  46%,
+  80% {
+    transform: translateY(0);
+  }
+}
+
+@keyframes core-scan {
+  0%,
+  100% {
+    opacity: 0.62;
+    transform: translateX(0);
+  }
+  50% {
+    opacity: 1;
+    transform: translateX(3px);
+  }
+}
+
+@keyframes specular-sweep {
+  0%,
+  100% {
+    opacity: 0.08;
+    transform: translateX(-12px);
+  }
+  52% {
+    opacity: 0.26;
+    transform: translateX(14px);
+  }
+}
+
+@keyframes servo-jitter {
+  0%,
+  100% {
+    filter: brightness(1);
+  }
+  25% {
+    filter: brightness(0.99);
+  }
+  55% {
+    filter: brightness(1.02);
+  }
+  75% {
+    filter: brightness(0.985);
+  }
+}
+
+.entry-copy h1 {
+  margin: 0 0 0.45rem;
+  font-size: clamp(1.8rem, 4vw, 2.4rem);
+  font-family: var(--headline-font);
+}
+
+.entry-copy p {
+  margin: 0;
+  color: var(--ink-1);
+}
+
+.entry-eyebrow {
+  margin: 0 0 0.45rem;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  font-size: 0.74rem;
+  color: var(--ink-1);
+}
+
+.entry-card {
+  margin-top: 1rem;
+  border: 1px solid rgba(197, 221, 232, 0.2);
+  border-radius: 16px;
+  background: rgba(8, 25, 35, 0.68);
+  padding: 1rem;
+}
+
+.entry-fieldset {
+  margin: 0;
+  border: 0;
+  padding: 0;
+  display: grid;
+  gap: 0.6rem;
+}
+
+.entry-fieldset legend {
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--ink-1);
+  margin-bottom: 0.6rem;
+}
+
+.entry-agent-option {
+  display: grid;
+  grid-template-columns: 22px minmax(0, 1fr);
+  gap: 0.5rem;
+  padding: 0.65rem 0.7rem;
+  border: 1px solid rgba(197, 221, 232, 0.18);
+  border-radius: 10px;
+  cursor: pointer;
+  background: rgba(197, 221, 232, 0.04);
+}
+
+.entry-agent-option:hover {
+  border-color: rgba(255, 217, 146, 0.4);
+  background: rgba(255, 217, 146, 0.07);
+}
+
+.entry-agent-option input {
+  margin-top: 0.18rem;
+}
+
+.entry-agent-name {
+  font-weight: 700;
+  color: var(--ink-0);
+}
+
+.entry-agent-url {
+  grid-column: 2;
+  color: var(--ink-1);
+  font-size: 0.8rem;
+  opacity: 0.86;
+  word-break: break-all;
+}
+
+.entry-connect-btn {
+  margin-top: 0.95rem;
+  height: 2.5rem;
+  border-radius: 999px;
+  border: 0;
+  padding: 0 1rem;
+  font-weight: 700;
+  color: #081923;
+  background: var(--highlight);
+  cursor: pointer;
+}
+
+.entry-connect-btn:disabled {
+  cursor: not-allowed;
+  opacity: 0.55;
+}
+
+.entry-scroll-space {
+  height: 24dvh;
+}
+
+@media (max-width: 760px) {
+  .entry-page {
+    min-height: 130dvh;
+    padding-top: 1rem;
+  }
+
+  .entry-hero {
+    grid-template-columns: 1fr;
+    text-align: center;
+  }
+
+  .entry-robot {
+    height: 196px;
+    transform: scale(0.92);
+    animation: none;
+  }
+
+  .entry-robot-arm-left,
+  .entry-robot-arm-right,
+  .entry-robot-specular--head,
+  .entry-robot-specular--body {
+    animation: none;
+  }
+}

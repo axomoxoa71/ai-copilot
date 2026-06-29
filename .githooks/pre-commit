@@ -1,0 +1,11 @@
+#!/usr/bin/env sh
+set -eu
+
+if ! command -v gitleaks >/dev/null 2>&1; then
+  echo "gitleaks is required for pre-commit secret scanning." >&2
+  echo "Install: https://github.com/gitleaks/gitleaks#installing" >&2
+  exit 1
+fi
+
+echo "Running staged secret scan (gitleaks)..."
+gitleaks protect --staged --config .gitleaks.toml --no-banner --redact --verbose

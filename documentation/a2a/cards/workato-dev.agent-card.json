@@ -1,0 +1,66 @@
+{
+  "name": "workato-dev",
+  "description": "Specializes in Workato workflow design, integration setup, and automation architecture. Handles complex multi-system integrations and workflow automation.",
+  "url": "http://localhost:8787/a2a/workato-dev",
+  "version": "1.0.0",
+  "capabilities": {
+    "streaming": false,
+    "pushNotifications": false
+  },
+  "defaultInputModes": [
+    "text/plain"
+  ],
+  "defaultOutputModes": [
+    "text/plain"
+  ],
+  "skills": [
+    {
+      "id": "workflow-creation",
+      "name": "Workflow Creation",
+      "description": "Capability: workflow-creation",
+      "tags": [
+        "workflow-creation"
+      ]
+    },
+    {
+      "id": "integration-setup",
+      "name": "Integration Setup",
+      "description": "Capability: integration-setup",
+      "tags": [
+        "integration-setup"
+      ]
+    },
+    {
+      "id": "trigger-configuration",
+      "name": "Trigger Configuration",
+      "description": "Capability: trigger-configuration",
+      "tags": [
+        "trigger-configuration"
+      ]
+    },
+    {
+      "id": "action-setup",
+      "name": "Action Setup",
+      "description": "Capability: action-setup",
+      "tags": [
+        "action-setup"
+      ]
+    },
+    {
+      "id": "error-handling",
+      "name": "Error Handling",
+      "description": "Capability: error-handling",
+      "tags": [
+        "error-handling"
+      ]
+    },
+    {
+      "id": "notification-routing",
+      "name": "Notification Routing",
+      "description": "Capability: notification-routing",
+      "tags": [
+        "notification-routing"
+      ]
+    }
+  ]
+}

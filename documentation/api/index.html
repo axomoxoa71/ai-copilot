@@ -1,0 +1,649 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Copilot Agent API - Documentation</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+            overflow: hidden;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 40px;
+            text-align: center;
+        }
+        
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+        
+        .header p {
+            font-size: 1.1em;
+            opacity: 0.9;
+        }
+        
+        .content {
+            display: flex;
+            min-height: 600px;
+        }
+        
+        .sidebar {
+            width: 280px;
+            background: #f8f9fa;
+            border-right: 1px solid #e0e0e0;
+            padding: 20px;
+            overflow-y: auto;
+        }
+        
+        .sidebar h3 {
+            font-size: 0.9em;
+            text-transform: uppercase;
+            color: #666;
+            margin-top: 20px;
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+        
+        .sidebar a {
+            display: block;
+            padding: 8px 12px;
+            color: #667eea;
+            text-decoration: none;
+            border-radius: 4px;
+            margin-bottom: 4px;
+            transition: all 0.2s;
+        }
+        
+        .sidebar a:hover {
+            background: #e0e0e0;
+            color: #764ba2;
+        }
+        
+        .sidebar a.active {
+            background: #667eea;
+            color: white;
+        }
+        
+        .main {
+            flex: 1;
+            padding: 40px;
+            overflow-y: auto;
+        }
+        
+        h2 {
+            color: #667eea;
+            margin-top: 40px;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #e0e0e0;
+        }
+        
+        h2:first-child {
+            margin-top: 0;
+        }
+        
+        h3 {
+            color: #764ba2;
+            margin-top: 25px;
+            margin-bottom: 15px;
+        }
+        
+        .endpoint {
+            background: #f8f9fa;
+            border-left: 4px solid #667eea;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+        
+        .method {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 4px;
+            font-weight: bold;
+            font-size: 0.85em;
+            margin-right: 10px;
+            color: white;
+        }
+        
+        .method.get {
+            background: #61affe;
+        }
+        
+        .method.post {
+            background: #49cc90;
+        }
+        
+        .path {
+            display: inline-block;
+            font-family: 'Courier New', monospace;
+            background: #fff;
+            padding: 4px 8px;
+            border-radius: 3px;
+            font-size: 0.95em;
+        }
+        
+        .request-section,
+        .response-section {
+            margin: 15px 0;
+        }
+        
+        .section-title {
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 8px;
+            font-size: 0.95em;
+            text-transform: uppercase;
+            color: #666;
+        }
+        
+        pre {
+            background: #2d2d2d;
+            color: #f8f8f2;
+            padding: 15px;
+            border-radius: 4px;
+            overflow-x: auto;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+            line-height: 1.4;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+        }
+        
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #e0e0e0;
+        }
+        
+        th {
+            background: #f8f9fa;
+            font-weight: 600;
+            color: #667eea;
+        }
+        
+        tr:hover {
+            background: #f8f9fa;
+        }
+        
+        .status-code {
+            display: inline-block;
+            padding: 3px 8px;
+            border-radius: 3px;
+            font-weight: bold;
+            font-size: 0.85em;
+        }
+        
+        .status-200 {
+            background: #d4edda;
+            color: #155724;
+        }
+        
+        .status-400 {
+            background: #fff3cd;
+            color: #856404;
+        }
+        
+        .status-500 {
+            background: #f8d7da;
+            color: #721c24;
+        }
+        
+        .example-card {
+            background: #f0f7ff;
+            border: 1px solid #b8d4ff;
+            border-radius: 4px;
+            padding: 15px;
+            margin: 15px 0;
+        }
+        
+        .example-card h4 {
+            color: #667eea;
+            margin-bottom: 10px;
+        }
+        
+        ul, ol {
+            margin-left: 20px;
+            margin-top: 10px;
+            margin-bottom: 10px;
+        }
+        
+        li {
+            margin-bottom: 8px;
+        }
+        
+        code {
+            background: #f5f5f5;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+        }
+        
+        .parameter-box {
+            background: #fff;
+            border: 1px solid #e0e0e0;
+            border-radius: 4px;
+            padding: 15px;
+            margin: 10px 0;
+        }
+        
+        .required {
+            color: #d32f2f;
+            font-weight: bold;
+        }
+        
+        .optional {
+            color: #666;
+            font-style: italic;
+        }
+        
+        .footer {
+            background: #f8f9fa;
+            padding: 20px 40px;
+            border-top: 1px solid #e0e0e0;
+            text-align: center;
+            color: #666;
+            font-size: 0.9em;
+        }
+        
+        @media (max-width: 768px) {
+            .content {
+                flex-direction: column;
+            }
+            
+            .sidebar {
+                width: 100%;
+                border-right: none;
+                border-bottom: 1px solid #e0e0e0;
+                display: flex;
+                flex-wrap: wrap;
+            }
+            
+            .sidebar h3 {
+                width: 100%;
+            }
+            
+            .main {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🚀 AI Copilot Agent API</h1>
+            <p>Multi-Agent Orchestration REST API Documentation</p>
+        </div>
+        
+        <div class="content">
+            <div class="sidebar">
+                <h3>Quick Links</h3>
+                <a href="#overview" class="active">Overview</a>
+                <a href="#base-url">Base URL</a>
+                <a href="#auth">Authentication</a>
+                
+                <h3>Endpoints</h3>
+                <a href="#health">Health Check</a>
+                <a href="#chat">Chat Completion</a>
+                
+                <h3>Reference</h3>
+                <a href="#schemas">Schemas</a>
+                <a href="#examples">Examples</a>
+                <a href="#errors">Error Handling</a>
+                <a href="#monitoring">Monitoring</a>
+            </div>
+            
+            <div class="main">
+                <!-- Overview -->
+                <h2 id="overview">Overview</h2>
+                <p>The Agent API is a RESTful service that orchestrates multi-agent conversations using LangGraph. It intelligently routes requests between specialized agents based on content analysis and delegation rules.</p>
+                
+                <p><strong>Base Technology Stack:</strong></p>
+                <ul>
+                    <li>Express.js REST framework</li>
+                    <li>LangGraph for agent orchestration</li>
+                    <li>OpenAI/OpenRouter LLM provider</li>
+                    <li>OpenTelemetry for observability</li>
+                    <li>Zod for request validation</li>
+                </ul>
+                
+                <!-- Base URL -->
+                <h2 id="base-url">Base URL</h2>
+                <pre><code>http://localhost:8787</code></pre>
+                <p>For production deployments, update the base URL accordingly. The API port is configurable via the <code>AGENT_API_PORT</code> environment variable.</p>
+                
+                <!-- Authentication -->
+                <h2 id="auth">Authentication</h2>
+                <p><strong>Current Status:</strong> No authentication required (suitable for local development).</p>
+                <p><strong>Production Recommendation:</strong> Implement bearer token or API key validation before deploying.</p>
+                
+                <!-- Health Endpoint -->
+                <h2 id="health">Health Check Endpoint</h2>
+                
+                <div class="endpoint">
+                    <div>
+                        <span class="method get">GET</span>
+                        <span class="path">/agent-api/health</span>
+                    </div>
+                    <p style="margin-top: 10px;"><strong>Purpose:</strong> Verify API server is running and check configuration status.</p>
+                </div>
+                
+                <h3>Request</h3>
+                <pre><code>GET /agent-api/health HTTP/1.1
+Host: localhost:8787</code></pre>
+                
+                <h3>Response</h3>
+                <p><span class="status-code status-200">200 OK</span></p>
+                <pre><code>{
+  "status": "ok",
+  "hasOpenRouterApiKey": true,
+  "uptimeSeconds": 3600
+}</code></pre>
+                
+                <h3>Use Cases</h3>
+                <ul>
+                    <li>Kubernetes liveness/readiness probes</li>
+                    <li>Load balancer health checks</li>
+                    <li>Client-side connectivity verification</li>
+                    <li>Monitoring and alerting dashboards</li>
+                </ul>
+                
+                <!-- Chat Completion Endpoint -->
+                <h2 id="chat">Chat Completion Endpoint</h2>
+                
+                <div class="endpoint">
+                    <div>
+                        <span class="method post">POST</span>
+                        <span class="path">/agent-api</span>
+                    </div>
+                    <p style="margin-top: 10px;"><strong>Purpose:</strong> Submit a user message and receive agent response with intelligent routing.</p>
+                </div>
+                
+                <h3>Request Headers</h3>
+                <pre><code>POST /agent-api HTTP/1.1
+Host: localhost:8787
+Content-Type: application/json</code></pre>
+                
+                <h3>Request Body Parameters</h3>
+                <div class="parameter-box">
+                    <p><code>sessionId</code> <span class="required">required</span></p>
+                    <p style="margin-left: 15px; margin-top: 5px; color: #666;">Unique session identifier (non-empty string). Used to group related messages together.</p>
+                </div>
+                
+                <div class="parameter-box">
+                    <p><code>userPrompt</code> <span class="required">required</span></p>
+                    <p style="margin-left: 15px; margin-top: 5px; color: #666;">User message to send to the agent (non-empty string).</p>
+                </div>
+                
+                <h3>Request Body Example</h3>
+                <pre><code>{
+  "sessionId": "unique-session-identifier",
+  "userPrompt": "What are the open Jira tickets in the current sprint?"
+}</code></pre>
+                
+                <h3>Response (Success)</h3>
+                <p><span class="status-code status-200">200 OK</span></p>
+                <pre><code>{
+  "agentResponse": "Based on the query, I've found...",
+  "agentName": "atlassian-agent",
+  "sessionId": "unique-session-identifier",
+  "tokenUsage": {
+    "prompt_tokens": 250,
+    "completion_tokens": 150,
+    "total_tokens": 400
+  },
+  "logs": [
+    {
+      "timestamp": "2026-06-19T10:30:45.123Z",
+      "component": "delegationEngine",
+      "message": "Routed to atlassian-agent",
+      "level": "info"
+    }
+  ],
+  "traceparent": "00-0af7651916cd43dd8448eb211c80319c-..."
+}</code></pre>
+                
+                <h3>Response (Validation Error)</h3>
+                <p><span class="status-code status-400">400 Bad Request</span></p>
+                <pre><code>{
+  "error": "Invalid request payload.",
+  "details": {
+    "userPrompt": ["String must contain at least 1 character"]
+  }
+}</code></pre>
+                
+                <!-- Schemas -->
+                <h2 id="schemas">Request/Response Schemas</h2>
+                
+                <h3>Chat Completion Request</h3>
+                <table>
+                    <tr>
+                        <th>Field</th>
+                        <th>Type</th>
+                        <th>Required</th>
+                        <th>Description</th>
+                    </tr>
+                    <tr>
+                        <td><code>sessionId</code></td>
+                        <td>string</td>
+                        <td>Yes</td>
+                        <td>Unique session identifier (min 1 character)</td>
+                    </tr>
+                    <tr>
+                        <td><code>userPrompt</code></td>
+                        <td>string</td>
+                        <td>Yes</td>
+                        <td>User message (min 1 character, max 1MB payload)</td>
+                    </tr>
+                </table>
+                
+                <h3>Chat Completion Response</h3>
+                <table>
+                    <tr>
+                        <th>Field</th>
+                        <th>Type</th>
+                        <th>Description</th>
+                    </tr>
+                    <tr>
+                        <td><code>agentResponse</code></td>
+                        <td>string</td>
+                        <td>The agent's response text</td>
+                    </tr>
+                    <tr>
+                        <td><code>agentName</code></td>
+                        <td>string</td>
+                        <td>Name of the agent that handled the request</td>
+                    </tr>
+                    <tr>
+                        <td><code>sessionId</code></td>
+                        <td>string</td>
+                        <td>Echo of the request session ID</td>
+                    </tr>
+                    <tr>
+                        <td><code>tokenUsage</code></td>
+                        <td>object</td>
+                        <td>Token consumption metrics (prompt, completion, total)</td>
+                    </tr>
+                    <tr>
+                        <td><code>logs</code></td>
+                        <td>array</td>
+                        <td>Structured logs from request processing</td>
+                    </tr>
+                    <tr>
+                        <td><code>traceparent</code></td>
+                        <td>string</td>
+                        <td>W3C Trace Context for correlation</td>
+                    </tr>
+                </table>
+                
+                <!-- Examples -->
+                <h2 id="examples">Code Examples</h2>
+                
+                <div class="example-card">
+                    <h4>cURL Example</h4>
+                    <pre><code>curl -X POST http://localhost:8787/agent-api \
+  -H "Content-Type: application/json" \
+  -d '{
+    "sessionId": "user-123-session-456",
+    "userPrompt": "What is 2 + 2?"
+  }'</code></pre>
+                </div>
+                
+                <div class="example-card">
+                    <h4>JavaScript/TypeScript</h4>
+                    <pre><code>async function sendMessage(sessionId, userPrompt) {
+  const response = await fetch(
+    'http://localhost:8787/agent-api',
+    {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ sessionId, userPrompt }),
+    }
+  );
+  
+  if (!response.ok) {
+    throw new Error(await response.text());
+  }
+  
+  return response.json();
+}
+
+const result = await sendMessage(
+  'my-session',
+  'Show me JIRA tickets'
+);
+console.log(result.agentResponse);</code></pre>
+                </div>
+                
+                <div class="example-card">
+                    <h4>Python</h4>
+                    <pre><code>import requests
+
+response = requests.post(
+    'http://localhost:8787/agent-api',
+    json={
+        'sessionId': 'my-session',
+        'userPrompt': 'What are open issues?'
+    }
+)
+
+data = response.json()
+print(data['agentResponse'])
+print(f"Tokens: {data['tokenUsage']['total_tokens']}")</code></pre>
+                </div>
+                
+                <!-- Error Handling -->
+                <h2 id="errors">Error Handling</h2>
+                
+                <table>
+                    <tr>
+                        <th>Status</th>
+                        <th>Meaning</th>
+                        <th>Common Causes</th>
+                    </tr>
+                    <tr>
+                        <td><span class="status-code status-200">200</span></td>
+                        <td>OK</td>
+                        <td>Request succeeded</td>
+                    </tr>
+                    <tr>
+                        <td><span class="status-code status-400">400</span></td>
+                        <td>Bad Request</td>
+                        <td>Invalid payload, missing required fields</td>
+                    </tr>
+                    <tr>
+                        <td><span class="status-code status-500">500</span></td>
+                        <td>Internal Error</td>
+                        <td>Unhandled server exception, LLM provider error</td>
+                    </tr>
+                </table>
+                
+                <p style="margin-top: 20px;">All errors include structured JSON response with <code>error</code> message and optional <code>details</code> field for validation errors.</p>
+                
+                <!-- Monitoring -->
+                <h2 id="monitoring">Monitoring & Observability</h2>
+                
+                <h3>Health Check Interval</h3>
+                <p>Recommended: Check health endpoint every <strong>30 seconds</strong></p>
+                
+                <h3>Metrics to Monitor</h3>
+                <ul>
+                    <li><strong>Response Time:</strong> p50, p95, p99 latency</li>
+                    <li><strong>Error Rate:</strong> 4xx and 5xx response percentage</li>
+                    <li><strong>Token Usage:</strong> Average tokens per request</li>
+                    <li><strong>Active Sessions:</strong> Concurrent session count</li>
+                    <li><strong>LLM Latency:</strong> Time to receive LLM response</li>
+                </ul>
+                
+                <h3>Trace Correlation</h3>
+                <p>All responses include <code>traceparent</code> header following W3C Trace Context. Use this to correlate logs across services:</p>
+                <ul>
+                    <li>Frontend request logs</li>
+                    <li>Backend processing logs</li>
+                    <li>LLM API logs</li>
+                    <li>External service calls</li>
+                </ul>
+                
+                <h3>Environment Variables</h3>
+                <table>
+                    <tr>
+                        <th>Variable</th>
+                        <th>Default</th>
+                        <th>Purpose</th>
+                    </tr>
+                    <tr>
+                        <td><code>OPENROUTER_API_KEY</code></td>
+                        <td>-</td>
+                        <td>API key for LLM provider (required)</td>
+                    </tr>
+                    <tr>
+                        <td><code>OTEL_TRACES_EXPORTER</code></td>
+                        <td>console</td>
+                        <td>Tracing: console, otlp, none</td>
+                    </tr>
+                    <tr>
+                        <td><code>AGENT_API_PORT</code></td>
+                        <td>8787</td>
+                        <td>Server port</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+        
+        <div class="footer">
+            <p>AI Copilot Agent API Documentation &mdash; Last updated June 2026</p>
+            <p>For full documentation, see <a href="../architecture.md" style="color: #667eea;">Architecture Guide</a></p>
+        </div>
+    </div>
+</body>
+</html>

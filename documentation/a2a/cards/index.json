@@ -1,0 +1,20 @@
+{
+  "generatedAt": "2026-06-24T09:04:51.889Z",
+  "source": "src/resources/agent-config.json",
+  "generator": "agent-api/generate-a2a-cards.js",
+  "baseUrl": "http://localhost:8787",
+  "agents": [
+    {
+      "name": "atlassian-agent",
+      "file": "atlassian-agent.agent-card.json"
+    },
+    {
+      "name": "orchestrator-agent",
+      "file": "orchestrator-agent.agent-card.json"
+    },
+    {
+      "name": "workato-dev",
+      "file": "workato-dev.agent-card.json"
+    }
+  ]
+}

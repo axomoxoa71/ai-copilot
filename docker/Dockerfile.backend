@@ -1,0 +1,16 @@
+FROM node:24-alpine
+
+WORKDIR /app
+
+COPY package.json package-lock.json ./
+RUN npm ci --omit=dev
+
+COPY agent-api ./agent-api
+COPY src/resources ./src/resources
+
+ENV NODE_ENV=production
+ENV AGENT_API_PORT=8787
+
+EXPOSE 8787
+
+CMD ["node", "agent-api/server.js"]

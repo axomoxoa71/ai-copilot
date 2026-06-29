@@ -1,0 +1,66 @@
+{
+  "name": "atlassian-agent",
+  "description": "Specializes in Jira and Confluence workflows, issue triage, JQL queries, and documentation guidance. Handles all Atlassian-related tasks.",
+  "url": "http://localhost:8787/a2a/atlassian-agent",
+  "version": "1.0.0",
+  "capabilities": {
+    "streaming": false,
+    "pushNotifications": false
+  },
+  "defaultInputModes": [
+    "text/plain"
+  ],
+  "defaultOutputModes": [
+    "text/plain"
+  ],
+  "skills": [
+    {
+      "id": "jira-query",
+      "name": "Jira Query",
+      "description": "Capability: jira-query",
+      "tags": [
+        "jira-query"
+      ]
+    },
+    {
+      "id": "issue-creation",
+      "name": "Issue Creation",
+      "description": "Capability: issue-creation",
+      "tags": [
+        "issue-creation"
+      ]
+    },
+    {
+      "id": "issue-update",
+      "name": "Issue Update",
+      "description": "Capability: issue-update",
+      "tags": [
+        "issue-update"
+      ]
+    },
+    {
+      "id": "confluence-search",
+      "name": "Confluence Search",
+      "description": "Capability: confluence-search",
+      "tags": [
+        "confluence-search"
+      ]
+    },
+    {
+      "id": "workflow-management",
+      "name": "Workflow Management",
+      "description": "Capability: workflow-management",
+      "tags": [
+        "workflow-management"
+      ]
+    },
+    {
+      "id": "jql-parsing",
+      "name": "Jql Parsing",
+      "description": "Capability: jql-parsing",
+      "tags": [
+        "jql-parsing"
+      ]
+    }
+  ]
+}

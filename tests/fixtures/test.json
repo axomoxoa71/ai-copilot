@@ -1,0 +1,17 @@
+{
+  "name": "Test File",
+  "description": "This is a test JSON file for attachment testing",
+  "version": "1.0.0",
+  "items": [
+    {
+      "id": 1,
+      "title": "Item 1",
+      "content": "First test item"
+    },
+    {
+      "id": 2,
+      "title": "Item 2",
+      "content": "Second test item"
+    }
+  ]
+}

@@ -1,0 +1,14 @@
+title = "ai-copilot gitleaks config"
+
+[allowlist]
+description = "Allow placeholder/example values only"
+paths = [
+  '''^\.env\/.*\.env\.example$''',
+  '''^documentation\/.*''',
+  '''^README\.md$'''
+]
+regexes = [
+  '''replace-with-[A-Za-z0-9_-]+''',
+  '''your-[A-Za-z0-9_-]+''',
+  '''example'''
+]

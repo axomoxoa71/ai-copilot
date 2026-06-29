@@ -1,0 +1,16 @@
+name: ai-copilot-backend
+
+services:
+  ai-copilot-backend:
+    image: ai-copilot-backend:latest
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile.backend
+    container_name: ai-copilot-backend
+    env_file:
+      - ../.env/agent-dev.env
+    environment:
+      - AGENT_API_BASE_URL=http://host.docker.internal:18787
+    ports:
+      - "18787:8787"
+    restart: unless-stopped

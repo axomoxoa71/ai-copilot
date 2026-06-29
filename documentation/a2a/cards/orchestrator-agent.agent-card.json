@@ -1,0 +1,66 @@
+{
+  "name": "orchestrator-agent",
+  "description": "Agent: orchestrator-agent. Role: orchestrator.",
+  "url": "http://localhost:8787/a2a/orchestrator-agent",
+  "version": "1.0.0",
+  "capabilities": {
+    "streaming": false,
+    "pushNotifications": false
+  },
+  "defaultInputModes": [
+    "text/plain"
+  ],
+  "defaultOutputModes": [
+    "text/plain"
+  ],
+  "skills": [
+    {
+      "id": "delegate-to-atlassian-agent",
+      "name": "Delegate to atlassian-agent",
+      "description": "Delegates atlassian tasks to atlassian-agent",
+      "tags": [
+        "jira",
+        "confluence",
+        "jql",
+        "epic",
+        "backlog"
+      ]
+    },
+    {
+      "id": "delegate-to-workato-dev",
+      "name": "Delegate to workato-dev",
+      "description": "Delegates workato tasks to workato-dev",
+      "tags": [
+        "workato",
+        "automation",
+        "workflow",
+        "integration",
+        "trigger"
+      ]
+    },
+    {
+      "id": "delegate-to-code-agent",
+      "name": "Delegate to code-agent",
+      "description": "Delegates coding tasks to code-agent",
+      "tags": [
+        "code",
+        "function",
+        "refactor",
+        "debug",
+        "test"
+      ]
+    },
+    {
+      "id": "delegate-to-doc-agent",
+      "name": "Delegate to doc-agent",
+      "description": "Delegates documentation tasks to doc-agent",
+      "tags": [
+        "document",
+        "write",
+        "readme",
+        "guide",
+        "explain"
+      ]
+    }
+  ]
+}
