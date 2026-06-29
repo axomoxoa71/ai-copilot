@@ -26,17 +26,17 @@ The Lang ecosystem provides complementary building blocks for developing, orches
 
 | Name | Purpose | Home Page (main link) | Documentation (docu link) |
 |---|---|---|---|
-| LangChain | Build LLM application logic using reusable components for prompts, models, tools, and retrieval | https://www.langchain.com | https://python.langchain.com/docs/introduction/ |
+| LangChain | Build LLM application logic using reusable components for prompts, models, tools, and retrieval | https://www.langchain.com | https://docs.langchain.com/oss/python/langchain/overview |
 
 ### Capabilities
 
 | Capability | Documentation (link) |
 |---|---|
-| Prompt templates and prompt composition | https://python.langchain.com/docs/concepts/prompt_templates/ |
-| Model abstraction and provider integrations | https://python.langchain.com/docs/concepts/chat_models/ |
-| Tool calling and agent execution | https://python.langchain.com/docs/concepts/tools/ |
-| Retrieval-augmented generation (RAG) pipelines | https://python.langchain.com/docs/concepts/rag/ |
-| Structured output parsing | https://python.langchain.com/docs/concepts/structured_outputs/ |
+| Prompt templates and prompt composition | https://docs.langchain.com/oss/python/langchain/prompt-templates |
+| Model abstraction and provider integrations | https://docs.langchain.com/oss/python/langchain/models |
+| Tool calling and agent execution | https://docs.langchain.com/oss/python/langchain/agents |
+| Retrieval-augmented generation (RAG) pipelines | https://docs.langchain.com/oss/python/langchain/rag#build-a-rag-agent-with-langchain |
+| Structured output parsing | https://docs.langchain.com/oss/python/langchain/structured-output |
 
 ## LangGraph
 
@@ -74,17 +74,17 @@ The Lang ecosystem provides complementary building blocks for developing, orches
 
 | Name | Purpose | Home Page (main link) | Documentation (docu link) |
 |---|---|---|---|
-| LangServe | Deploy LangChain and LangGraph runnables as production-ready API endpoints | https://www.langchain.com | https://python.langchain.com/docs/langserve/ |
+| LangServe | Deploy LangChain and LangGraph runnables as production-ready API endpoints | https://github.com/langchain-ai/langserve | https://github.com/langchain-ai/langserve/blob/main/README.md |
 
 ### Capabilities
 
 | Capability | Documentation (link) |
 |---|---|
-| API serving for runnable chains and graphs | https://python.langchain.com/docs/langserve/ |
-| FastAPI integration for deployment | https://python.langchain.com/docs/langserve/ |
-| Input and output schema exposure | https://python.langchain.com/docs/langserve/ |
-| Playground endpoint support for debugging | https://python.langchain.com/docs/langserve/ |
-| Deployment patterns for cloud and containers | https://python.langchain.com/docs/langserve/ |
+| API serving for runnable chains and graphs | https://github.com/langchain-ai/langserve/blob/main/README.md |
+| FastAPI integration for deployment | https://github.com/langchain-ai/langserve/blob/main/README.md |
+| Input and output schema exposure | https://github.com/langchain-ai/langserve/blob/main/README.md |
+| Playground endpoint support for debugging | https://github.com/langchain-ai/langserve/blob/main/README.md |
+| Deployment patterns for cloud and containers | https://github.com/langchain-ai/langserve/tree/main/examples |
 
 ## LangChain Hub
 
